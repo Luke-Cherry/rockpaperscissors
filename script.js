@@ -1,3 +1,14 @@
+const rockButton = document.querySelector("#rockButton");
+const paperButton = document.querySelector("#paperButton");
+const scissorsButton = document.querySelector("#scissorsButton");
+
+const gameScore = document.querySelector("#gameScore");
+
+const gameResult = document.querySelector("#gameResult");
+
+let playerScore = 0;
+let computerScore = 0;
+
 const getComputerChoice = () => {
   const randomChoice = Math.floor(Math.random() * 3) + 1;
   if (randomChoice == 1) {
@@ -20,16 +31,29 @@ const playRound = (playerSelection, computerSelection) => {
     (player === "paper" && computer === "rock") ||
     (player === "scissors" && computer === "paper")
   ) {
-    return `You Win! ${playerSelection} beats ${computerSelection}.`
+    playerScore++;
+    return `You Win! ${playerSelection} beats ${computerSelection}.`;
   } else {
-    return `You Lose! ${computerSelection} beats ${playerSelection}.`
+    computerScore++;
+    return `You Lose! ${computerSelection} beats ${playerSelection}.`;
   }
 };
 
-const playGame = () => {
-    const playerSelection = prompt("Choose Rock, Paper or Scissors: ");
+const playGame = (selection) => {
+  if (playerScore < 5 && computerScore < 5) {
+    console.log(selection);
+    const playerSelection = selection;
     const computerSelection = getComputerChoice();
-    console.log(playRound(playerSelection, computerSelection));
-}
+    gameResult.innerText = playRound(playerSelection, computerSelection);
+  }
+  if (playerScore >= 5) {
+    gameResult.innerText = "Congratulations you have won!";
+  } else if (computerScore >= 5) {
+    gameResult.innerText = "You have lost!";
+  }
+  gameScore.innerText = `Score: You ${playerScore} | ${computerScore} Computer`;
+};
 
-playGame();
+rockButton.addEventListener("click", () => playGame("Rock"));
+paperButton.addEventListener("click", () => playGame("Paper"));
+scissorsButton.addEventListener("click", () => playGame("Scissors"));
